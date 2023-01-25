@@ -1,13 +1,5 @@
 ######################################################
-#
-# Lecture notes 4/8/2020
-
-# Read in the Covid-19 data for 4/8/2020
-# Under course documents in Blackboard
-
-#Cdata1 <- read.csv( "GlobalCovid19-2020-05-01.csv",
-#                    header = TRUE)
-# setwd("/Volumes/GoogleDrive/My Drive/RGandED/Amona/RCode")
+# This code estimate the model parameters using Metropolis Hasting (MH) and solves the ODE using Euler method
 
 # Clear Everything
 #rm( list= ls() )
