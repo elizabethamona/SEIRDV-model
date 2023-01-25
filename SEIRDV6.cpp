@@ -52,10 +52,8 @@ List SEIRDV5cpp( double S0, double E0, double I0, double RE0,
     D0 = std::max(0.0, D0n + zeta1*I0n );
     V0 = std::max(0.0, V0n + rho1v[i]*S0n + rho1v[i]*E0n + rho1v[i]*RE0 + rho1Iv[i]*S0n );
     Rep0 =  alpha1v[i]*S0n/(beta1 + gamma1v[i] + rho1v[i]) ;
-    //Rep0 = 1; //alpha1v[i]*( alpha1v[i]*lambda1)/(zeta11*(beta1 + gamma1v[i] + zeta11))
-    // Based on our last discussion, I have computed R0 using S(0) instead of fixed pt.
-    //Rep0 =  alpha1v[i]/(beta1 + gamma1v[i] + rho1v[i]);
     
+    //output
     S0out[ i ] = S0;
     E0out[ i ] = E0;
     I0out[ i ] = I0;
