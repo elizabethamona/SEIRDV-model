@@ -1,6 +1,5 @@
 # SEIRDV model code
 
-About the code:
 To run the main file "MCMCV1wCpp.R", you need to source the attached files called "SEIRDV6c.R" and "SEIRDV6.cpp". Once everything is done correctly, you should be able to run this code successfully. Note that "SEIRDV6.cpp" is written in C++ in order to speed up the simulation time. 
 
 Code Description:
