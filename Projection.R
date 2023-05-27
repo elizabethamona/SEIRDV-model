@@ -1,6 +1,6 @@
 ######################################################
 
-#### This code projects the number of deaths vaccination prevented. 
+
 
 library( Rcpp )
 sourceCpp( "SEIRDV6cc.cpp" )
@@ -11,12 +11,12 @@ source("SEIRDV6ccc.R")
 
 # Read in the data
 Cdata1 <- read.csv( "QatarIRDV_ed.csv",header = TRUE)
-View(Cdata1)
+#View(Cdata1)
 # re-naming the dataset
 Q1 <- as.data.frame( Cdata1[39:463,-9])    #The first 38 days are zero so there is no need for them.
 
 dim(Q1)
-View(Q1)
+#View(Q1)
 n1Q <- nrow(Q1)
 # Adjust Infected to remove recovered and remove deaths
 Q1$AdjInfect <- Q1$Confirmed - Q1$Recovered - Q1$Deaths
@@ -24,7 +24,7 @@ Q1$AdjInfect <- Q1$Confirmed - Q1$Recovered - Q1$Deaths
 #Cdata1 <- Q1
 data1 <- Q1
 n1 <- n1Q
-View(data1)
+#View(data1)
 
 
 ###########################################################################
@@ -75,8 +75,9 @@ gamma5Q <- 1.00e-12/2
 gamma6Q <- 1.00e-12/2
 
 
-zeta1 <- 0.000013
 
+
+zeta1 <- 0.000013
 
 ImpI1 <- 12    # Time at which an impulse jump occurs.
 
@@ -97,7 +98,6 @@ gamma1 <- rep( 1.00e-12, length( gchpt1 ) )
 gamma1Step <- rep(1.00e-15, length(gamma1) )
 beta1Step <- 0.0001
 zeta1Step <- 0.000001
-#rho1Step <- c(0,0.00001)
 alpha1Step <- rep( 1.00e-8, length( alpha1) ) # c(6.369427e-11, 8.000000e-11, 1.000000e-11, 5.000000e-11,5.000000e-11, 5.000000e-11, 5.000000e-11 )
 betaI1Step <- 0.001
 
@@ -116,7 +116,7 @@ load( filename2 )    # Everything will be named correctly since it was saved fro
 
 
 tic <- Sys.time()
-nMCMC1 <- 10000
+nMCMC1 <- 1000
 Q1MCMC <- MCMCSEIRD5VPred(data1, S0, E0, I0, RE0, RI0, D0, 
                           alpha1, beta1, betaI1, gamma1, zeta1,
                           n1, chpt1, gchpt1, ImpI1,
@@ -126,8 +126,6 @@ Q1MCMC <- MCMCSEIRD5VPred(data1, S0, E0, I0, RE0, RI0, D0,
                           betaI1Step,
                           gamma1Step,
                           zeta1Step, 
-                          #rho1Step, 
-                          #rho1IStep,
                           prior1am, prior1as,
                           prior1b, prior1g, prior1z)
 Sys.time() - tic
@@ -139,21 +137,16 @@ Sys.time() - tic
 # Trace plots
 #
 #######################################################################
-for( i in 1:length(alpha1) ){
-  plot( Q1MCMC$alpha1[,i], type = "l" )
-}
-plot( Q1MCMC$beta1, type = "l" )
-plot( Q1MCMC$betaI1, type = "l" )
-for( i in 1:length( gamma1 ) ){
-  plot( Q1MCMC$gamma1[,i], type = "l" )
-}
-plot( Q1MCMC$zeta1, type = "l" )
-# plot( Q1MCMC$rho1[,1], type = "l" )
-# plot( Q1MCMC$rho1[,2], type = "l" )
-#plot( Q1MCMC$kappa1[,1], type = "l" )
-#plot( Q1MCMC$kappa1[,2], type = "l" )
-#plot( Q1MCMC$rho1I, type = "l" )
-plot( Q1MCMC$zeta1, type = "l" )
+# for( i in 1:length(alpha1) ){
+#   plot( Q1MCMC$alpha1[,i], type = "l" )
+# }
+# plot( Q1MCMC$beta1, type = "l" )
+# plot( Q1MCMC$betaI1, type = "l" )
+# for( i in 1:length( gamma1 ) ){
+#   plot( Q1MCMC$gamma1[,i], type = "l" )
+# }
+# plot( Q1MCMC$zeta1, type = "l" )
+# plot( Q1MCMC$zeta1, type = "l" )
 
 # Create files so you can read these in 
 alpha1Step <- apply( Q1MCMC$alpha1, 2, sd )/4
@@ -161,9 +154,7 @@ gamma1Step <- apply( Q1MCMC$gamma1, 2, sd )/4
 betaI1Step <- sd( Q1MCMC$betaI1)/4
 beta1Step <- sd( Q1MCMC$beta1 )/4
 zeta1Step <- sd( Q1MCMC$zeta1 )/4
-#rho1Step <- apply( Q1MCMC$rho1, 2, sd )/4
-#kappa1Step <- apply( Q1MCMC$kappa1, 2, sd )/4
-#rho1IStep <- sd( Q1MCMC$rho1I)/4
+
 
 # Step #So we can append other generated values to the above list 
 
@@ -173,9 +164,7 @@ beta1 <- Q1MCMC$beta1[nMCMC1]
 betaI1 <- Q1MCMC$betaI1[nMCMC1]
 gamma1 <- Q1MCMC$gamma1[nMCMC1,]
 zeta1 <- Q1MCMC$zeta1[nMCMC1]
-#rho1 <- Q1MCMC$rho1[nMCMC1,]
-#kappa1 <- Q1MCMC$kappa1[nMCMC1,]
-#rho1I <- Q1MCMC$rho1I[nMCMC1]
+
 
 
 #########  Why not just use a save function?  This will create a R database and save it.  When you load it everything
@@ -191,14 +180,12 @@ save( Q1MCMC20_p, file = "Q1MCMC20_p.Rdat" )
 
 #############################################################################
 
-
-# #### Plotting the projection of the number of lives vaccines saved
 # Load the data
 library( "Rcpp" )
 sourceCpp("SEIRDV6cc.cpp")
 source( "SEIRDV6ccc.R")
 load( "Q1MCMC20_p.Rdat" )
-load( "StartStepValuesM1V5E3.RData")
+load( "StartStepValuesM1V5E2.RData")
 
 S0 <- 2782000
 E0 <- 5
@@ -215,18 +202,14 @@ D425 <- Cdata1[n1,]$Deaths
 
 X1a <- MatrixBuild1( chpt1, n1 )
 X1g <- MatrixBuild1( gchpt1, n1 )
-# X1r <- MatrixBuild1( rchpt1, n1 )
-# X1k <- MatrixBuild1( kchpt1, n1 )
 X1b <- rep(0, n1)
 X1b[ImpI1] <- 1
-#X1rI <- rep(0, n1)
-#X1rI[ImpRI1 ] <- 1
 mchpt1 <- list( X1a = X1a, X1g = X1g, X1b = X1b)
 
 
 n1P <- rep( 1, length(426:631) )
-Dout1 <- matrix(0, nrow = 10000, ncol = length( n1P ) )
-for( i in 1:10000){
+Dout1 <- matrix(0, nrow = 1000, ncol = length( n1P ) )
+for( i in 1:1000){
   alpha1t <- Q1MCMC20_p$alpha1[i,]
   beta1t <- Q1MCMC20_p$beta1[i]
   betaI1t <- Q1MCMC20_p$betaI1[i]
@@ -271,7 +254,5 @@ lines( 426:631, DQuant1[1,], col = "black", lwd = 2 )
 # lines( 426:631, DQuant1[3,], type = "l", col = "black", lty = 3)
 
 
-hist( Dout1[,206]-D425)
 
-quantile( Dout1[,206]-D425, c(0.025, 0.5, 0.975) )
 
