@@ -4,7 +4,7 @@
 # Clear Everything
 #rm( list= ls() )
 
-#s#etwd( "G:/My Drive/RGandED/Amona/RCode")
+#setwd( "G:/My Drive/RGandED/Amona/RCode")
 
 library( Rcpp )
 sourceCpp( "SEIRDV6.cpp" )
@@ -130,7 +130,7 @@ load( filename1 )    # Everything will be named correctly since it was saved fro
 
 
 tic <- Sys.time()
-nMCMC1 <- 100
+nMCMC1 <- 30000
 Q1MCMC <- MCMCSEIRD5VPred(data1, S0, E0, I0, RE0, RI0, D0, V0, 
                           alpha1, beta1, betaI1, gamma1, zeta1, rho1, rho1I,
                           n1, chpt1, rchpt1, gchpt1, ImpI1, ImpRI1,
@@ -240,28 +240,11 @@ n1Q <- n1
 plot( 1:n1Q, Q1$AdjInfect, col = "red", type = "b", lwd=2, ylab = " Actively Infected",
       xlab = "Days since 29Feb2020", main="Actively Infected")
 #dev.off()
-lines( 1:n1Q, IPred1m[1,], col ="red" )
-lines( 1:n1Q, IPred1m[2,], col = "red", lty = 2 )
-lines( 1:n1Q, IPred1m[3,], col = "red", lty = 2 )
 
 
 #pdf("Recovered.pdf")
 plot( 1:n1Q, Q1$Recovered, col = "seagreen", type = "b", lwd=2, ylab = " Recovered",
       xlab = "Days since 29Feb2020", main="Recovered")
-#dev.off()
-lines( 1:n1Q, RIPred1m[1,], col = "seagreen")
-lines( 1:n1Q, RIPred1m[2,], col = "seagreen", lty = 2)
-lines( 1:n1Q, RIPred1m[3,], col = "seagreen", lty = 2)
-#dev.off()
-
-
-#pdf("Vaccinated.pdf")
-plot( 1:n1Q, Q1$Vaccinated, col = "darkblue", type = "b", lwd=3,
-      xlab = "Days since 29April2021",ylab = "Vaccinated",main = "Vaccinated")
-#dev.off()
-lines( 1:n1Q, VPred1m[1,], col = "purple")
-lines( 1:n1Q, VPred1m[2,], col = "purple", lty = 2)
-lines( 1:n1Q, VPred1m[3,], col = "purple", lty = 2)
 #dev.off()
 
 
@@ -269,13 +252,10 @@ lines( 1:n1Q, VPred1m[3,], col = "purple", lty = 2)
 plot( 1:n1Q, Q1$Deaths, col = "black", type = "b", 
       lwd=2, xlab = "Days since 29Feb2020",ylab = "Deaths",main = "Deaths")
 #dev.off()
-lines( 1:n1Q, DPred1m[1,], col = "black")
-lines( 1:n1Q, DPred1m[2,], col = "black", lty = 2)
-lines( 1:n1Q, DPred1m[3,], col = "black", lty = 2)
 
-lines( 1:n1Q, DPred1m[1,], col = "black")
-lines( 1:n1Q, DPred1m[2,], col = "black", lty = 2)
-lines( 1:n1Q, DPred1m[3,], col = "black", lty = 2)
+#pdf("Vaccinated.pdf")
+plot( 1:n1Q, Q1$Vaccinated, col = "darkblue", type = "b", lwd=3,
+      xlab = "Days since 29April2021",ylab = "Vaccinated",main = "Vaccinated")
 #dev.off()
 
 
@@ -291,48 +271,6 @@ PsuedoR2 <- 1 - (AIError + RIError + DError + VError)/TotError1
 
 PsuedoR2
 
-
-## The R2 looks great. Now, plotting the posterior distribution plots:
- 
-plot( 1:n1Q, IPred1m[3,], type = "l", col = "red3", lty = 3,
-      ylab = "Infections",
-      xlab = "Days since 29Feb2020", main = "Infected-Post")
-polygon( x = c( 1:n1Q,rev(1:n1Q)), y =c( IPred1m[3,], rev( IPred1m[2,] ) ),
-         col = "darksalmon", border = "darksalmon")
-lines( 1:n1Q, IPred1m[1,], col = "red3", lwd = 2 )
-points( 1:n1Q, Q1$AdjInfect, col = "red3" )
-
-
-plot( 1:n1Q, RIPred1m[3,], type = "l", col = "aquamarine4", lty = 3,
-      ylab = "Recovered",
-      xlab = "Days since 29Feb2020", main="Recovered-Post")
-polygon( x = c( 1:n1Q,rev(1:n1Q)), y =c( RIPred1m[3,], rev( RIPred1m[2,] ) ),
-         col = "aquamarine3", border = "aquamarine3") 
-lines( 1:n1Q, RIPred1m[1,], col = "aquamarine4", lwd = 2 )
-points( 1:n1Q, Q1$Recovered, col = "aquamarine4" )
-
-
-
-#pdf("post-death.pdf")
-plot( 1:n1Q, DPred1m[3,], type = "l", col = "black", lty = 3,
-      ylab = "Deaths",
-      xlab = "Days since 29Feb2020", main="Death-Post")
-polygon( x = c( 1:n1Q,rev(1:n1Q)), y =c( DPred1m[3,], rev( DPred1m[2,] ) ),
-         col = "azure4", border = "azure4") 
-lines( 1:n1Q, DPred1m[1,], col = "black", lwd = 2 )
-points( 1:n1Q, Q1$Deaths, col = "black" )
-
-#dev.off()
-
-#pdf("post-vaccine.pdf")
-plot( 1:n1Q, VPred1m[3,], type = "l", col = "darkgoldenrod", lty = 3,
-      ylab = "Vaccinated",
-      xlab = "Days since 29April2021", main="Vaccinated-Post")
-polygon( x = c( 1:n1Q,rev(1:n1Q)), y =c( VPred1m[3,], rev( VPred1m[2,] ) ),
-         col = "chocolate", border = "chocolate") 
-lines( 1:n1Q, VPred1m[1,], col = "#556B2F", lwd = 2 )
-points( 1:n1Q, Q1$Vaccinated, col = "#556B2F" )
-#dev.off()
 
 
 # Reproduction number....
@@ -557,7 +495,6 @@ quantile(Cont3,c(0.025,0.5,0.975))
 quantile(Cont4,c(0.025,0.5,0.975))
 quantile(Cont5,c(0.025,0.5,0.975))
 quantile(Cont6,c(0.025,0.5,0.975))
-
 
 
 
