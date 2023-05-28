@@ -244,6 +244,7 @@ for( i in 1:1000){
 }
 
 DQuant1 <- apply( Dout1, 2, quantile, c(0.5,0.025, 0.975))
+## The plot below is Figure 3 in the main document
 plot( 426:631, DQuant1[1,], ylim=c(min(DQuant1[2,]),max(DQuant1[3,])), type = "l", col = "darkgrey", lty = 3,
       ylab = "Deaths",
       xlab = "Days", main="Death-Post without vaccine" )
