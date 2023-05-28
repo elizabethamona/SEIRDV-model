@@ -5,7 +5,7 @@
 #rm( list= ls() )
 
 #setwd( "G:/My Drive/RGandED/Amona/RCode")
-
+##################################################################################################################
 library( Rcpp )
 sourceCpp( "SEIRDV6.cpp" )
 
@@ -154,6 +154,7 @@ Sys.time() - tic
 #
 #######################################################################
 #pdf("alpha.pdf")
+### These are the trace plots in the summplementary material (Figure 2)
 for( i in 1:length(alpha1) ){
   plot( Q1MCMC$alpha1[,i], type = "l" )
 }
@@ -233,31 +234,32 @@ RIPred1m <- apply( Q1MCMC$RIPred1, 2, quantile, c(0.5,0.25,0.975) )
 DPred1m <- apply( Q1MCMC$DPred1, 2, quantile, c(0.5,0.25,0.975) )
 VPred1m <- apply( Q1MCMC$VPred1, 2, quantile, c(0.5,0.25,0.975) )
 
-
+####  Plots in the main document are below:
 ## Plotting the variables
 #pdf("Infected.pdf")
 n1Q <- n1
 plot( 1:n1Q, Q1$AdjInfect, col = "red", type = "b", lwd=2, ylab = " Actively Infected",
       xlab = "Days since 29Feb2020", main="Actively Infected")
 #dev.off()
-
+#The above is Figure 2a in the main document
 
 #pdf("Recovered.pdf")
 plot( 1:n1Q, Q1$Recovered, col = "seagreen", type = "b", lwd=2, ylab = " Recovered",
       xlab = "Days since 29Feb2020", main="Recovered")
 #dev.off()
-
+#The above is Figure 2b in the main document
 
 #pdf("Deaths.pdf")
 plot( 1:n1Q, Q1$Deaths, col = "black", type = "b", 
       lwd=2, xlab = "Days since 29Feb2020",ylab = "Deaths",main = "Deaths")
 #dev.off()
+#The above is Figure 2c in the main document
 
 #pdf("Vaccinated.pdf")
 plot( 1:n1Q, Q1$Vaccinated, col = "darkblue", type = "b", lwd=3,
       xlab = "Days since 29April2021",ylab = "Vaccinated",main = "Vaccinated")
 #dev.off()
-
+#The above is Figure 2d in the main document
 
 # Basic Model Fit Statistics
 AIError <- sum( (Q1$AdjInfect - IPred1m[1,])^2 );AIError
@@ -272,9 +274,9 @@ PsuedoR2 <- 1 - (AIError + RIError + DError + VError)/TotError1
 PsuedoR2
 
 
-
-# Reproduction number....
-
+##################################################################################################
+# Effective Reproduction number....
+##################################################################################################
 load( "Q1MCMC20.Rdat" )
 ls()
 n1 <- n1Q
@@ -299,8 +301,9 @@ for (i in 1:nMCMC1) {
                       Q1MCMC20$rho1[i,], Q1MCMC20$rho1I[i], Q1MCMC20$zeta1[i], n1, mchpt1)
   Rep0[i,] <- SIROUT1$Rep0
 }
-Rep0
+#Rep0
 
+#Below is the plot of the effective reproduction number in the supplementary material (Figure 1)
 Rep0m <- apply( Rep0, 2, quantile, c(0.5,0.025,0.975) )
 plot( 2:n1, Rep0m[1,2:n1] , col = "palevioletred3", lwd=2, type = "l",
       xlab = "Days since 29Feb2020",
@@ -324,6 +327,9 @@ rho1 <- Q1MCMC20$rho1
 rho1I <- Q1MCMC20$rho1I
 zeta1 <- Q1MCMC20$zeta1
 
+##########################################################################################################
+### The results below are in Table 4 of the main document.......
+###########################################################################################################
 ##  Mean median, sd, and quantile for alpha1 ###########
 mean_alpha1 <- apply(alpha1, 2, mean);mean_alpha1
 sd_alpha1 <- apply(alpha1, 2, sd);sd_alpha1
@@ -367,9 +373,11 @@ mean(rho1I)
 sd(rho1I)
 median(rho1I)
 quantile(rho1I, c(0.025,0.5,0.975))
+###################################################################################################################
 
-#### Now, to find the difference between the alpha's:
-
+###########################################################################################################
+#### Now, to find the difference between the alpha's: (Results in Table 5 )
+############################################################################################################
 Conta1 <- alpha1[,2] - alpha1[,1]
 Conta2 <- alpha1[,3] - alpha1[,2]
 Conta3 <- alpha1[,4] - alpha1[,3]
@@ -450,10 +458,11 @@ quantile(Conta11,c(0.025,0.5,0.975))
 quantile(Conta12,c(0.025,0.5,0.975))
 quantile(Conta13,c(0.025,0.5,0.975))
 quantile(Conta14,c(0.025,0.5,0.975))
+######################################################################################################
 
-
-####%%%%%%%%%% Now, to find the difference between the gammas: %%%%%%%%%%%%%%%%%%%%%
-
+############################################################################################
+####%%%%%%%%%% Now, to find the difference between the gammas (Results in Table 6)
+############################################################################################
 Cont1 <- gamma1[,2] - gamma1[,1]
 Cont2 <- gamma1[,3] - gamma1[,2]
 Cont3 <- gamma1[,4] - gamma1[,3]
@@ -495,10 +504,11 @@ quantile(Cont3,c(0.025,0.5,0.975))
 quantile(Cont4,c(0.025,0.5,0.975))
 quantile(Cont5,c(0.025,0.5,0.975))
 quantile(Cont6,c(0.025,0.5,0.975))
+########################################################################################
 
-
-
-
+######################
+#The end
+#######################
 
 
 
