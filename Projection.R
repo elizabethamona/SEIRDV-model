@@ -1,6 +1,7 @@
 ######################################################
 
-
+## This code provides the projection analysis results. 
+#Note that you need to have the file SEIRDV6cc.cpp and SEIRDV6ccc.R to run the projection .R file.
 
 library( Rcpp )
 sourceCpp( "SEIRDV6cc.cpp" )
