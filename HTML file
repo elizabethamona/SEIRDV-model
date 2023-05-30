@@ -1,9 +1,9 @@
 
-Main code:
-file:///I:/.shortcut-targets-by-id/1wS9MgHev-ezOiAG-WicOMSKuZqrynJ90/Amona/RCode/Code_submitted_to_JDS/Elizabeth_Amona_SEIRDVCode.html
-
+Main code (SEIRDV model):
+file:///C:/Users/amonaeb/Desktop/Code_submitted_to_JDS/Elizabeth_Amona_SEIRDVCode.html
 
 Projection:
 file:///C:/Users/amonaeb/Desktop/Code_submitted_to_JDS/ElizabethAmona_Projection.html
 
-Note that these two files are outputs in HTML format.
+Note that these two files are outputs in HTML format. 
+Note: You might want to run the R file of the SEIRDV model to visually display a better trace.
