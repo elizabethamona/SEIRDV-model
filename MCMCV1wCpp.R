@@ -155,40 +155,24 @@ Sys.time() - tic
 #######################################################################
 #pdf("alpha.pdf")
 ### These are the trace plots in the summplementary material (Figure 2)
-for( i in 1:length(alpha1) ){
-  plot( Q1MCMC$alpha1[,i], type = "l" )
-}
+#pdf("alpha.pdf")
+plot( Q1MCMC$alpha1[,7], type = "l" , ylab = "alpha")  
+plot( Q1MCMC$alpha1[,10], type = "l" , ylab = "alpha")
+plot( Q1MCMC$alpha1[,11], type = "l" , ylab = "alpha")
 #dev.off()
 
 #pdf("beta.pdf")
-plot( Q1MCMC$beta1, type = "l" )
+plot( Q1MCMC$beta1, type = "l" , ylab = "beta")
 #dev.off()
 
-#pdf("betaI.pdf")
-plot( Q1MCMC$betaI1, type = "l" )
+#pdf("zeta.pdf")
+plot( Q1MCMC$zeta1, type = "l" , ylab = "zeta")
 #dev.off()
-
-#pdf("gamma.pdf")
-for( i in 1:length( gamma1 ) ){
-  plot( Q1MCMC$gamma1[,i], type = "l" )
-}
-#dev.off()
-
-#pdf("gamma.pdf")
-plot( Q1MCMC$zeta1, type = "l" )
-#dev.off()
-
-
-plot( Q1MCMC$rho1[,1], type = "l" )
-
 
 #pdf("rho.pdf")
-plot( Q1MCMC$rho1[,2], type = "l" )
+plot( Q1MCMC$rho1[,2], type = "l", ylab = "rho" )
 #dev.off()
 
-#pdf("gamma.pdf")
-plot( Q1MCMC$rho1I, type = "l" )
-#dev.off()
 
 # Create files so you can read these in 
 alpha1Step <- apply( Q1MCMC$alpha1, 2, sd )/4
@@ -197,7 +181,6 @@ betaI1Step <- sd( Q1MCMC$betaI1)/4
 beta1Step <- sd( Q1MCMC$beta1 )/4
 zeta1Step <- sd( Q1MCMC$zeta1 )/4
 rho1Step <- apply( Q1MCMC$rho1, 2, sd )/4
-#kappa1Step <- apply( Q1MCMC$kappa1, 2, sd )/4
 rho1IStep <- sd( Q1MCMC$rho1I)/4
 
 # Step
