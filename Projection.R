@@ -131,24 +131,7 @@ Q1MCMC <- MCMCSEIRD5VPred(data1, S0, E0, I0, RE0, RI0, D0,
                           prior1b, prior1g, prior1z)
 Sys.time() - tic
 
-
-
-#######################################################################
-#
-# Trace plots
-#
-#######################################################################
-# for( i in 1:length(alpha1) ){
-#   plot( Q1MCMC$alpha1[,i], type = "l" )
-# }
-# plot( Q1MCMC$beta1, type = "l" )
-# plot( Q1MCMC$betaI1, type = "l" )
-# for( i in 1:length( gamma1 ) ){
-#   plot( Q1MCMC$gamma1[,i], type = "l" )
-# }
-# plot( Q1MCMC$zeta1, type = "l" )
-# plot( Q1MCMC$zeta1, type = "l" )
-
+#########################################################################
 # Create files so you can read these in 
 alpha1Step <- apply( Q1MCMC$alpha1, 2, sd )/4
 gamma1Step <- apply( Q1MCMC$gamma1, 2, sd )/4
@@ -244,16 +227,13 @@ for( i in 1:1000){
 }
 
 DQuant1 <- apply( Dout1, 2, quantile, c(0.5,0.025, 0.975))
+##############################################################################################
 ## The plot below is Figure 3 in the main document
 plot( 426:631, DQuant1[1,], ylim=c(min(DQuant1[2,]),max(DQuant1[3,])), type = "l", col = "darkgrey", lty = 3,
       ylab = "Deaths",
       xlab = "Days", main="Death-Post without vaccine" )
 polygon( c(426:631,631:426), c(DQuant1[2,],rev(DQuant1[3,])),col = "azure4", border = "azure4")
 lines( 426:631, DQuant1[1,], col = "black", lwd = 2 )
-# points( 426:631, Q1$Deaths[426:631], col = "black" )
-# lines( 426:631, DQuant1[1,], type = "l", col = "black")
-# lines( 426:631, DQuant1[2,], type = "l", col = "black", lty = 3)
-# lines( 426:631, DQuant1[3,], type = "l", col = "black", lty = 3)
 
 
 
